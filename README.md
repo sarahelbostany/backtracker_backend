@@ -1,9 +1,9 @@
 # Unit 2 Solo Project
 
-## title
+## Title
 Baby tracker
 
-# Overview
+# Overview:
 
 
 # User Stories:
@@ -38,4 +38,3 @@ Baby tracker
 # Stretchgoals:
 * a timer on feeding portion
 * creating a weekly table to show improvements
-# backtracker_backend
