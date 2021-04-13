@@ -43,21 +43,52 @@ userController.login = async (req, res) => {
     }
   }
 
-// Find saved data
-userController.getData = async (req, res) => {
+// user info
+userController.getUser = async (req, res) => {
+  try {
+    let user = await models.user.findOne({
+      where:{
+        id: req.params.id
+      }
+    })
+      res.json({user})
+
+  } catch (error) {
+    res.json({error})
+  }
+}
+
+// Find saved baby data
+userController.getBabyTracker = async (req, res) => {
   try {
     let user = await models.user.findOne({
       where:{
         id: req.params.userId
       }
     })
-    let data = await user.getData()
-    res.json(data)
-
+    let babyTracker = await user.getBabyTracker()
+    res.json(babyTracker)
   } catch (error) {
     res.json({error})
   }
 }
+
+//update
+userController.update = async (req, res) => {
+  try {
+    let updates = req.body
+    let user = await models.user.findOne({
+      where:{
+        id: req.params.id
+      }
+    })
+    let updateBaby = await user.update(updates)
+    res.json({updateBaby})
+  } catch (error) {
+    res.json.error
+  }
+}
+
 
 //Delete user account
 userController.delete = async (req, res) => {
@@ -68,7 +99,7 @@ userController.delete = async (req, res) => {
       }
     })
     await user.destroy()
-    res.json({user, message: 'Account has been deleted'})
+    res.json({user, message: 'Your account has been deleted'})
 
   } catch (error) {
     res.json({error})
@@ -77,14 +108,14 @@ userController.delete = async (req, res) => {
 
 
 //Delete saved baby data
-userController.deleteData = async (req, res) => {
+userController.deletebabyTracker = async (req, res) => {
   try {
     let user = await models.user.findOne({
       where:{
-        id: req.params.userId
+        id: req.params.id
       }
     })
-    let data = await user.getData()
+    let data = await user.getBabyTracker()
     await user.removeData(data)
     res.json({user, data})
   } catch (error) {

@@ -11,12 +11,12 @@ const userRouters = require('./routes/userRoutes')
 app.use('/users', userRouters)
 
 const babyTrackerRouter = require('./routes/babyTrackerRoutes')
-app.use('/babyTrackers', babyTrackerRouter )
+app.use('/babyTracker', babyTrackerRouter ) // is this supposed to be plural or singular
 
 
 const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
-    console.log(`port running on ${PORT}`)
+    console.log(`your server is listening`)
   routesReport.print()
 })
 
