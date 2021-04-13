@@ -6,7 +6,7 @@ const userRoutes = express.Router()
 
 
 userRoutes.get('/:id', userController.getUser)
-userRoutes.get('/:userId/getfood', userController.getBabyTracker)
+userRoutes.get('/:userId/getbabyTracker', userController.getBabyTracker)
 
 userRoutes.post('/', userController.createUser)
 userRoutes.post('/login', userController.login)
