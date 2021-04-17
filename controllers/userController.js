@@ -16,111 +16,90 @@ userController.createUser = async (req, res) => {
 
     } catch (error) {
         res.status(400)
-        res.json({error: 'Email already exists'})
+        res.json({error: 'User already exists with this email'})
       }
 }
 
-  //login
-
+//login
 userController.login = async (req, res) => {
-    try {
+  try{
       const user = await models.user.findOne({
-        where:{
-          email: req.body.email
-        }
+          where: {
+              email: req.body.email
+          }
       })
-
       if(user.password === req.body.password){
-        res.json({message: 'login successful', user: user})
+          res.json({ message: 'login successful', user: user})
       }else{
-        res.status(401)
-        res.json({error:'incorrect password'})
+          res.status(401)
+          res.json({ error: 'incorrect password' })
       }
-
-    } catch (error) {
+  }catch(error){
       res.status(400)
-      res.json({error: 'login failed'})
-    }
-  }
-
-// user info
-userController.getUser = async (req, res) => {
-  try {
-    let user = await models.user.findOne({
-      where:{
-        id: req.params.id
-      }
-    })
-      res.json({user})
-
-  } catch (error) {
-    res.json({error})
+      res.json({ error: 'login failed'})
   }
 }
 
-// Find saved baby data
-userController.getBabyTracker = async (req, res) => {
-  try {
-    let user = await models.user.findOne({
-      where:{
-        id: req.params.userId
-      }
-    })
-    let babyTracker = await user.getBabyTracker()
-    res.json(babyTracker)
-  } catch (error) {
-    res.json({error})
+//get all users
+userController.getAll = async (req,res) => {
+  try{
+      console.log("hi")
+      const users = await models.user.findAll()
+      console.log(users);
+      res.json({ users })
+  }catch (error){
+      res.status(400)
+      res.json({ error: 'users info not found'})
   }
 }
 
-//update
+//user info
+userController.getUser = async (req,res) => {
+  try{
+      const user = await models.user.findOne({
+          where:{
+              id: req.params.id
+          }
+      })
+      res.json({ user })
+  }catch (error){
+      res.status(400)
+      res.json({ error: 'user info not found'})
+  }
+}
+
+//update user
 userController.update = async (req, res) => {
   try {
-    let updates = req.body
-    let user = await models.user.findOne({
+    const user = await models.user.findOne({
       where:{
-        id: req.params.id
+          id: req.params.id
       }
     })
-    let updateBaby = await user.update(updates)
-    res.json({updateBaby})
+    const updatedUser = await user.update(req.body)
+
+
+    res.json({updatedUser})
   } catch (error) {
-    res.json.error
+    res.status(400)
+      res.json({ error: 'user could not be updated'})
   }
 }
 
-
-//Delete user account
-userController.delete = async (req, res) => {
+//delete user
+userController.destroy = async (req, res) => {
   try {
-    let user = await models.user.findOne({
-      where: {
-        id: req.params.id
+      const user = await models.user.findOne(
+          {
+              where: {
+                  id: req.params.id
+              }
+          })
+          await user.destroy()
+          res.json({user, message: 'Your account has been deleted'})
+  }catch (error) {
+      res.status(400)
+      res.json({ error: 'could not delete user'})
       }
-    })
-    await user.destroy()
-    res.json({user, message: 'Your account has been deleted'})
-
-  } catch (error) {
-    res.json({error})
-  }
 }
-
-
-//Delete saved baby data
-userController.deletebabyTracker = async (req, res) => {
-  try {
-    let user = await models.user.findOne({
-      where:{
-        id: req.params.id
-      }
-    })
-    let data = await user.getBabyTracker()
-    await user.removeData(data)
-    res.json({user, data})
-  } catch (error) {
-    res.json({error})
-  }
-}
-
-  module.exports = userController;
+module.exports = userController

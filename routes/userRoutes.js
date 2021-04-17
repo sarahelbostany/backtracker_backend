@@ -5,17 +5,15 @@ const userRoutes = express.Router()
 
 
 
+userRoutes.get('/', userController.getAll)
 userRoutes.get('/:id', userController.getUser)
-userRoutes.get('/:userId/getbabyTracker', userController.getBabyTracker)
 
 userRoutes.post('/', userController.createUser)
 userRoutes.post('/login', userController.login)
 
-userRoutes.put('/:id/edit', userController.update)
+userRoutes.put('/:id', userController.update)
 
-userRoutes.delete('/:id', userController.delete)
-userRoutes.delete('/:userId/delete', userController.deletebabyTracker)
-
+userRoutes.delete('/:id', userController.destroy)
 
 
 
